@@ -28,6 +28,21 @@
 * **LOCAL_DATABASE_PORT** - *The port on your host that will be assigned to the MongoDB container*
 * **HOST_DATABASE_VOLUME_PATH** - *A path in your host's system to persist data on. i.e: `home/vboard1/mongodb`*
 
+## **Configure Applicative Behavior**
+* Open `config.json` file. Change the following properties if necessary:
+* `SERVER_WHITELIST` - Array of whitelisted origins/domains that can access the server.
+* `SERVER_URL` - The backend service's url. (Default `http://localhost:3333/back`)
+* `scheduled_tasks` - An array of pre-configured tasks and their respective cron expressions.
+* `system_logs`
+    * `base_path` - The system files' root path. (Default `/home/vbboard1`)
+    * `log_types` - A list of file types and their location information
+        * `path` - Relative path to the `base_path`. This path is used to indicate the file's location. (The `path` will be appended to `base_path`)
+        * `filename_regex` - A regular expression to match the file's name. (E.g: `"^Log_\\d{2}-\\d{2}-\\d{4}\\.txt$"` will match `Log_18-02-2022.txt`)
+    * `log_formats` - A list of string indications per file type. (E.g - "END" or "START" repsectively indicate a cartridge's end and start periods).
+
+## **Build the UI solution**
+* Navigate to the `dynamic-dashboard-front` and follow [build instructions](https://github.com/Sagiaj/dynamic-dashboard-front/blob/master/README.md) - **Only npm install and npm run build**
+
 ## **Run the NodeJS application**
 - `pm2 start`
 
