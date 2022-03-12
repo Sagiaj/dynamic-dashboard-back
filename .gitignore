@@ -4,3 +4,5 @@ node_modules
 queue_tmp
 /**/*.js
 /**/*.js.map
+
+!ecosystem.config.js
