@@ -65,6 +65,9 @@ export class Mutex {
 		const opts = options || this._options;
 		try {
 			const file_path = `${this._base_path}/${this.lockName}`;
+			if (!fs.existsSync(`${this._base_path}/${Mutex.DirPrefix}`)) {
+				await fs.promises.mkdir(`${this._base_path}/${Mutex.DirPrefix}`);
+			}
 			if (!fs.existsSync(file_path)) {
 				await fs.promises.writeFile(file_path, Buffer.from(""));
 			}

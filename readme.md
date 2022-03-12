@@ -23,7 +23,8 @@
 
 ## **Provision a local MongoDB container**
 * ### Run the following command:
-    * > `docker run -d -p `**{LOCAL_DATABASE_PORT}**`:27017 -v `**{HOST_DATABASE_VOLUME_PATH}**`:/data/db --name dashboard-mongodb mongo:latest`
+    * > `docker run -d -p `**{LOCAL_DATABASE_PORT}**`:27017 -v `**{HOST_DATABASE_VOLUME_PATH}**`:/data/db --name dashboard-mongodb gutsagi/dashboard:base`
+    * The docker image is based on the [dashboard DockerHub repository](https://hub.docker.com/r/gutsagi/dashboard) (The Docker image is customized for this project)
 * **LOCAL_DATABASE_PORT** - *The port on your host that will be assigned to the MongoDB container*
 * **HOST_DATABASE_VOLUME_PATH** - *A path in your host's system to persist data on. i.e: `home/vboard1/mongodb`*
 
