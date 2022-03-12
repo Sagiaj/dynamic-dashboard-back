@@ -1,0 +1,77 @@
+{
+    "mongo_config": {
+        "db_name": "dashboard",
+        "username": "YOUR_USERNAME",
+        "password": "YOUR_PASSWORD",
+        "connection_string": "mongodb://localhost:27017/dashboard",
+        "mongo_collections": {
+            "SYSTEM_LOGS": "system_logs"
+        }
+    },
+    "mongo_connections": {
+        "current": "mongodb://localhost:27017/dashboard"
+    },
+    "SERVER_PORT": 3333,
+    "SERVER_URL": "http://localhost:3333/back",
+    "SERVER_WHITELIST": ["localhost:8080", "http://localhost:8080", "localhost:3333", "http://localhost:3333"],
+    "scheduled_tasks": [
+        {
+            "task_type": "upsert_cartridge_log_file",
+            "cron_expression": "*/60 * * * * *"
+        },
+        {
+            "task_type": "upsert_system_log_file",
+            "cron_expression": "*/1 * * * * *"
+        },
+        {
+            "task_type": "upsert_notifications_log_file",
+            "cron_expression": "*/1 * * * * *"
+        },
+        {
+            "task_type": "upsert_experiments_log_file",
+            "cron_expression": "*/1 * * * * *"
+        },
+        {
+            "task_type": "upsert_threshold_status_log_file",
+            "cron_expression": "*/5 * * * * *"
+        }
+    ],
+    "system_logs": {
+        "base_path_production": "/home/vbboard1",
+        "base_path": "/home/vbboard1",
+        "log_types": {
+            "notifications": {
+                "path": "",
+                "filename_regex": "^Notification_log\\.txt$"
+            },
+            "cartridge": {
+                "path": "SYS_OP/cart",
+                "filename_regex": "^CARTRIDGE_LOG\\.txt$"
+            },
+            "live_data": {
+                "path": "Sys_data/Solutions/Log_backup",
+                "filename_regex": "^Log_\\d{2}-\\d{2}-\\d{4}\\.txt$"
+            },
+            "experiments": {
+                "path": "Sys_data/Solutions/Log_backup/Customer_Log",
+                "filename_regex": "^Log_\\d{2}-\\d{2}-\\d{4}\\.csv$"
+            },
+            "threshold_status": {
+                "path": "Sys_data/Solutions/BasicGUI",
+                "filename_regex": "^THRESHOLD_STATUS.*$"
+            }
+        },
+        "log_formats": {
+            "notifications": {},
+            "cartridge": {
+                "start_indicator": "START",
+                "end_indicator": "END"
+            },
+            "live_data": {
+                "detections_indicator": "Detections per type",
+                "summary_indicator": "Sum of bacteria"
+            },
+            "experiments": {}
+        }
+    }
+}
