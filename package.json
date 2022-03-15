@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && pm2 start",
-    "kill": "pm2 kill"
+    "kill": "pm2 kill",
+    "build": "npm install && ./node_modules/typescript/bin/tsc"
   },
   "author": "Sagi Ajaj",
   "license": "ISC",
@@ -21,7 +22,8 @@
     "mutex-node": "^1.0.0",
     "node-schedule": "^2.0.0",
     "proper-lockfile": "^4.1.2",
-    "readline-promise": "^1.0.5"
+    "readline-promise": "^1.0.5",
+    "typescript": "3.5.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

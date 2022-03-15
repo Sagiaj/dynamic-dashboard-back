@@ -17,4 +17,19 @@ export default class SystemController {
             return next(err);
         }
     }
+    
+    static async getCartridgeDates(req: Request, res: Response, next: NextFunction) {
+        const method_name = `${class_name}/getCartridgeDates`;
+        ddLogger.info(`${method_name} - start`);
+        try {
+            const time_from = req.query.time_from;
+            ddLogger.verbose(`${method_name} - calling SystemDataService/getCartridgeDates`);
+            const results = await SystemDataService.getCartridgeDates(Number(time_from));
+            ddLogger.info(`${method_name} - end`);
+            return res.send(results);
+        } catch (err) {
+            ddLogger.error(`${method_name} - Failed getting hourly average. Error=`, err);
+            return next(err);
+        }
+    }
 }

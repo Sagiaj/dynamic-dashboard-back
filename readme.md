@@ -27,6 +27,20 @@
     * The docker image is based on the [dashboard DockerHub repository](https://hub.docker.com/r/gutsagi/dashboard) (The Docker image is customized for this project)
 * **LOCAL_DATABASE_PORT** - *The port on your host that will be assigned to the MongoDB container*
 * **HOST_DATABASE_VOLUME_PATH** - *A path in your host's system to persist data on. i.e: `home/vboard1/mongodb`*
+* ### **Create MongoDB Indexes**
+    * **Type the following commands**
+    * *`docker exec -it dashboard-mongodb /bin/bash`*
+    * *`mongo`*
+    * **Paste the following lines into the MongoDB Console**
+    * ```
+        use dashboard;
+        db.CartridgeLogs.createIndex({ start_ts: 1 });
+        db.CartridgeLogs.createIndex({ end_ts: 1 });
+        db.SystemLogs.createIndex({ "timestamp" : 1 });
+        db.SystemLogs.createIndex({ "object_type_detections.type" : 1 });
+        db.SystemLogs.createIndex({ "object_type_detections.min_size_ml" : 1 });
+        db.SystemLogs.createIndex({ "object_type_detections.max_size_ml" : 1 });
+        ```
 
 ## **Configure Applicative Behavior**
 * Open `config.json` file. Change the following properties if necessary:
@@ -43,8 +57,17 @@
 ## **Build the UI solution**
 * Navigate to the `dynamic-dashboard-front` and follow [build instructions](https://github.com/Sagiaj/dynamic-dashboard-front/blob/master/README.md) - **Only npm install and npm run build**
 
+## **Build the Backend solution**
+* `npm run build`
+
 ## **Run the NodeJS application**
 - `pm2 start`
 
 ## **Monitor the application**
 * `pm2 monit`
+
+## **Kill the NodeJS application**
+- `pm2 kill`
+
+## **View application logs**
+- `pm2 logs all`

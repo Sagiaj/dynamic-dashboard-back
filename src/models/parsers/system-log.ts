@@ -26,11 +26,9 @@ export default class SystemLogsFileParserStrategy extends BaseFileParserStrategy
     
             console.time(`${process.env.pm_id}-${this._file_type}`);
             let i = -1;
-
             for await (let summary_line of lines) {
-                summary_line = (<string>summary_line)
                 i++;
-                if (i <= lower_threshold) { continue; }
+                if (lower_threshold && i <= lower_threshold) { continue; }
                 if (summary_line.indexOf(Globals.system_logs.log_formats.live_data.summary_indicator) !== -1 || summary_line === "") continue;
                 if (summary_line.indexOf(Globals.system_logs.log_formats.live_data.detections_indicator) !== -1) {
                     const last_idx = detections.length === 0 ? detections.length : detections.length - 1;
@@ -48,6 +46,7 @@ export default class SystemLogsFileParserStrategy extends BaseFileParserStrategy
                     continue;
                 }
 
+                
                 lineTime = this.getLineTime(summary_line);
                 const after_upper_threshold: boolean = !lineTime || (lineTime > upper_threshold);
                 const before_lower_threshold: boolean = !lineTime || (lineTime < lower_threshold);
@@ -75,7 +74,7 @@ export default class SystemLogsFileParserStrategy extends BaseFileParserStrategy
         if (!line) return 0;
         const first = line.substring(0, 19);
 
-        return (moment(first).unix() * 1000) + 7200000;
+        return (moment(first, "DD-MM-YYYY HH:mm:ss").utc().unix() * 1000);
     }
 
     private addDetections(object_type_detection: ObjectTypeDetection, summary_line: string): ObjectTypeDetection {

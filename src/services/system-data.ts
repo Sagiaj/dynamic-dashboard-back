@@ -208,4 +208,17 @@ export default class SystemDataService {
         ddLogger.error(`${method_name} - failed getting daily experiment threshold. Error=`, err);
       }
     }
+    
+    static async getCartridgeDates(limit: number = 5): Promise<any> {
+      const method_name = `${class_name}/getCartridgeDates`;
+      ddLogger.info(`${method_name} - start`);
+      try {
+        ddLogger.verbose(`${method_name} - calling MongodbProvider/queryMongoCollection`);
+        const cartridge_latest_start: any = await MongodbProvider.queryMongoCollection({ start_ts: { $ne: "" } }, Collections.CartridgeLogs, { start_ts: -1 }, 1, null);
+        const cartridge_latest_end: any = await MongodbProvider.queryMongoCollection({ end_ts: { $ne: "" } }, Collections.CartridgeLogs, { end_ts: -1 }, 1, null);
+        return { cartridge_latest_start, cartridge_latest_end };
+      } catch (err) {
+        ddLogger.error(`${method_name} - failed getting daily experiment threshold. Error=`, err);
+      }
+    }
 }
