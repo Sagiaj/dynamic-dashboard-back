@@ -1,4 +1,5 @@
 import moment from "moment";
+import { ObjectId } from "mongodb";
 import { AggregationPipelines } from "../models/aggregation-pipelines";
 import { Collections } from "../models/collections";
 import { NotificationType } from "../models/entities/notification";
@@ -209,14 +210,30 @@ export default class SystemDataService {
       }
     }
     
-    static async getCartridgeDates(limit: number = 5): Promise<any> {
+    static async getCartridgeDates(time_from: number, time_to: number): Promise<any> {
       const method_name = `${class_name}/getCartridgeDates`;
       ddLogger.info(`${method_name} - start`);
       try {
+        const query_object_start: any = { start_ts: { $ne: "" } };
+        const query_object_end: any = { end_ts: { $ne: "" } };
+        if (time_from) {
+          const id_from = ObjectId.createFromTime(time_from / 1000);
+          query_object_start._id = { $gte: id_from };
+          query_object_end._id = { $gte: id_from };
+        }
+        if (time_to) {
+          const id_to = ObjectId.createFromTime(time_to / 1000);
+          if (!query_object_start._id) query_object_start._id = {};
+          if (!query_object_end._id) query_object_end._id = {};
+          query_object_start._id["$lte"] = id_to;
+          query_object_end._id["$lte"] = id_to;
+        }
         ddLogger.verbose(`${method_name} - calling MongodbProvider/queryMongoCollection`);
-        const cartridge_latest_start: any = await MongodbProvider.queryMongoCollection({ start_ts: { $ne: "" } }, Collections.CartridgeLogs, { start_ts: -1 }, 1, null);
-        const cartridge_latest_end: any = await MongodbProvider.queryMongoCollection({ end_ts: { $ne: "" } }, Collections.CartridgeLogs, { end_ts: -1 }, 1, null);
-        return { cartridge_latest_start, cartridge_latest_end };
+        const cartridge_latest_start: any = await MongodbProvider.queryMongoCollection(query_object_start, Collections.CartridgeLogs, { start_ts: -1 }, 1, null);
+        const cartridge_latest_end: any = await MongodbProvider.queryMongoCollection(query_object_end, Collections.CartridgeLogs, { end_ts: -1 }, 1, null);
+        const latest_start_ts = cartridge_latest_start && cartridge_latest_start[0] && cartridge_latest_start[0].start_ts;
+        const latest_end_ts = cartridge_latest_end && cartridge_latest_end[0] && cartridge_latest_end[0].end_ts;
+        return { cartridge_latest_start: latest_start_ts, cartridge_latest_end: latest_end_ts, left_until_finish: 30 - moment().utc().diff(moment(latest_start_ts), "days") };
       } catch (err) {
         ddLogger.error(`${method_name} - failed getting daily experiment threshold. Error=`, err);
       }

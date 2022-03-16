@@ -23,8 +23,9 @@ export default class SystemController {
         ddLogger.info(`${method_name} - start`);
         try {
             const time_from = req.query.time_from;
+            const time_to = req.query.time_to;
             ddLogger.verbose(`${method_name} - calling SystemDataService/getCartridgeDates`);
-            const results = await SystemDataService.getCartridgeDates(Number(time_from));
+            const results = await SystemDataService.getCartridgeDates(Number(time_from), Number(time_to));
             ddLogger.info(`${method_name} - end`);
             return res.send(results);
         } catch (err) {
