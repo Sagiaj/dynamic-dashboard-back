@@ -33,4 +33,18 @@ export default class SystemController {
             return next(err);
         }
     }
+    
+    static async getSystemMode(req: Request, res: Response, next: NextFunction) {
+        const method_name = `${class_name}/getSystemMode`;
+        ddLogger.info(`${method_name} - start`);
+        try {
+            ddLogger.verbose(`${method_name} - calling SystemDataService/getSystemMode`);
+            const system_mode = await SystemDataService.getSystemMode();
+            ddLogger.info(`${method_name} - end`);
+            return res.send(system_mode);
+        } catch (err) {
+            ddLogger.error(`${method_name} - Failed getting hourly average. Error=`, err);
+            return next(err);
+        }
+    }
 }

@@ -4,6 +4,7 @@ import { AggregationPipelines } from "../models/aggregation-pipelines";
 import { Collections } from "../models/collections";
 import { NotificationType } from "../models/entities/notification";
 import MongodbProvider from "../providers/mongodb-provider";
+import FileReader from "../utilities/file-reader";
 
 const class_name = "SystemDataService";
 export default class SystemDataService {
@@ -235,7 +236,22 @@ export default class SystemDataService {
         const latest_end_ts = cartridge_latest_end && cartridge_latest_end[0] && cartridge_latest_end[0].end_ts;
         return { cartridge_latest_start: latest_start_ts, cartridge_latest_end: latest_end_ts, left_until_finish: 30 - moment().utc().diff(moment(latest_start_ts), "days") };
       } catch (err) {
+        ddLogger.error(`${method_name} - failed getting cartridge dates range. Error=`, err);
+      }
+    }
+    
+    static async getSystemMode(): Promise<any> {
+      const method_name = `${class_name}/getSystemMode`;
+      ddLogger.info(`${method_name} - start`);
+      try {
+        const system_mode_file_path = `${Globals.system_logs.base_path}/${Globals.system_logs.log_types.system_mode.path}`
+        const filename_regex = Globals.system_logs.log_types.system_mode.filename_regex;
+        const file_data = FileReader.readFile(system_mode_file_path, new RegExp(filename_regex)).toString("utf-8");
+
+        return file_data;
+      } catch (err) {
         ddLogger.error(`${method_name} - failed getting daily experiment threshold. Error=`, err);
+        throw err
       }
     }
 }

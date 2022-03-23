@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import moment from "moment";
 
 const base_path = `/home/vbboard1/generator`;
 const cartridge_path = `${base_path}/SYS_OP/cart`;
@@ -28,7 +29,8 @@ fileNameRefreshInterval();
 
 function generateLiveDataLog() {
     const bacterias = Math.random() > 0.2 ? Math.round(Math.random() * 50) : -1;
-    const dateStr = new Date().toJSON().slice(0, -5).replace("T", " ");
+    const dateStr = moment().utc().format("DD-MM-YYYY HH:mm:ss");
+    // const dateStr = new Date().toJSON().slice(0, -5).replace("T", " ");
     const chancesMatrix = new Array(3).fill(0).map(n => Math.random() > 0.92 ? 1 : 0);
     chancesMatrix[Math.floor(Math.random() * chancesMatrix.length)] = 1;
     bacteriaSum += bacterias === -1 ? 0 : bacterias;
@@ -55,25 +57,29 @@ function generateLiveDataLog() {
 
 function generateCartridgeLog() {
     const beginningStr = Math.random() > 0.5 ? "START" : "END";
-    const utcDate = new Date(Date.now());
-    const year = utcDate.getUTCFullYear();
-    const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-    const date = utcDate.getUTCDate().toString().padStart(2, "0");
-    const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-    const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-    return `${beginningStr} ${date}-${month}-${year} ${hours}:${minutes} 123456`;
+    // const utcDate = new Date(Date.now());
+    // const year = utcDate.getUTCFullYear();
+    // const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
+    // const date = utcDate.getUTCDate().toString().padStart(2, "0");
+    // const hours = utcDate.getUTCHours().toString().padStart(2, "0");
+    // const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
+    const dateStr = moment().utc().format("DD-MM-YYYY HH:mm:ss");
+    // return `${beginningStr} ${date}-${month}-${year} ${hours}:${minutes} 123456`;
+    return `${beginningStr} ${dateStr} 123456`;
 }
 
 function generateNotificationLog() {
-    const utcDate = new Date(Date.now());
-    const year = utcDate.getUTCFullYear();
-    const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-    const date = utcDate.getUTCDate().toString().padStart(2, "0");
-    const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-    const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-    const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
+    // const utcDate = new Date(Date.now());
+    // const year = utcDate.getUTCFullYear();
+    // const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
+    // const date = utcDate.getUTCDate().toString().padStart(2, "0");
+    // const hours = utcDate.getUTCHours().toString().padStart(2, "0");
+    // const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
+    // const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
     const contaminationOrNorm = Math.random() > 0.4 ? "Back to Norm" : "Contamination Alert";
-    return `${new Date().toJSON().slice(0, -5).replace("T", " ")}: ${contaminationOrNorm}`;
+    const dateStr = moment().utc().format("DD-MM-YYYY HH:mm:ss");
+    // return `${new Date().toJSON().slice(0, -5).replace("T", " ")}: ${contaminationOrNorm}`;
+    return `${dateStr}: ${contaminationOrNorm}`;
 }
 
 class FileManager {
@@ -113,7 +119,7 @@ async function writeToSystemLog() {
         const fileContent = `\n${generateLiveDataLog()}`;
         fs.appendFileSync(file, fileContent);
         writeToSystemLog();
-    }, 10000);
+    }, 2000);
 }
 
 async function writeToCartridge() {

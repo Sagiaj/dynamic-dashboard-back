@@ -7,4 +7,6 @@ router.get('/', SystemController.getThresholdStatus);
 
 router.get('/cartridge', SystemController.getCartridgeDates);
 
+router.get('/system-mode', SystemController.getSystemMode);
+
 export const systemRoutes = router;

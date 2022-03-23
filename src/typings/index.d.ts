@@ -30,6 +30,7 @@ interface LogFileTypes {
     live_data: FilePathDetails;
     experiments: FilePathDetails;
     threshold_status: FilePathDetails;
+    system_mode: FilePathDetails;
 }
 
 interface NotificationsFileFormat {
