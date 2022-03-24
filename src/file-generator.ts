@@ -8,24 +8,28 @@ const notification_path = `${base_path}`;
 const experiments_path = `${base_path}/Sys_data/Solutions/Log_backup/Customer_Log`;
 const ObjectTypes = ["particles", "yeast", "dust"];
 
-const date = new Date();
 const DateInfo = {
-    date,
-    date_file_str: `${(date.getDate()).toString().padStart(2, "0")}-${(date.getMonth()+1).toString().padStart(2,"0")}-${date.getFullYear()}`
+    get date() {
+        return new Date();
+    },
+    get date_file_str() {
+        const date = DateInfo.date;
+        return `${(date.getDate()).toString().padStart(2, "0")}-${(date.getMonth()+1).toString().padStart(2,"0")}-${date.getFullYear()}`;
+    }
 };
 
 // SYSTEM LOG DATA
 let live_data_log_count = 1;
 let bacteriaSum = 0;
 
-const fileNameRefreshInterval = () => {
-    setTimeout(() => {
-        DateInfo.date = new Date();
-        DateInfo.date_file_str = `${(DateInfo.date.getDate()).toString().padStart(2, "0")}-${(DateInfo.date.getMonth()+1).toString().padStart(2,"0")}-${DateInfo.date.getFullYear()}`;
-        fileNameRefreshInterval();
-    }, 500);
-}
-fileNameRefreshInterval();
+// const fileNameRefreshInterval = () => {
+//     setTimeout(() => {
+//         DateInfo.date = new Date();
+//         DateInfo.date_file_str = `${(DateInfo.date.getDate()).toString().padStart(2, "0")}-${(DateInfo.date.getMonth()+1).toString().padStart(2,"0")}-${DateInfo.date.getFullYear()}`;
+//         fileNameRefreshInterval();
+//     }, 500);
+// }
+// fileNameRefreshInterval();
 
 function generateLiveDataLog() {
     const bacterias = Math.random() > 0.2 ? Math.round(Math.random() * 50) : -1;
@@ -115,8 +119,7 @@ async function writeToSystemLog() {
     setTimeout(() => {
         console.log("WRITING SYSTEM LOG")
         const file = FileManager.openFile("live_data", `${live_data_path}/Log_${DateInfo.date_file_str}.txt`);
-        const curDate = Date.now().toString();
-        const fileContent = `\n${generateLiveDataLog()}`;
+        const fileContent = `${generateLiveDataLog()}\n`;
         fs.appendFileSync(file, fileContent);
         writeToSystemLog();
     }, 2000);

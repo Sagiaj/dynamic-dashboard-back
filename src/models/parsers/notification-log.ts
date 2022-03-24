@@ -50,6 +50,6 @@ export default class NotificationLogsFileParserStrategy extends BaseFileParserSt
         if (!line) return 0;
         const first = line.substring(0, 19);
 
-        return (moment(first, "DD-MM-YYYY HH:mm:ss").unix() * 1000) + 7200000;
+        return moment.utc(first, "DD-MM-YYYY HH:mm:ss").unix() * 1000;
     }
 }
