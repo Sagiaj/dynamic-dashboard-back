@@ -54,6 +54,9 @@
         * `filename_regex` - A regular expression to match the file's name. (E.g: `"^Log_\\d{2}-\\d{2}-\\d{4}\\.txt$"` will match `Log_18-02-2022.txt`)
     * `log_formats` - A list of string indications per file type. (E.g - "END" or "START" repsectively indicate a cartridge's end and start periods).
 
+## **All-In-One command for application startup**
+* `npm run prepare && npm run start` - Will compile backend code, build the frontend UI solution, run docker container, and serve on port 3333
+
 ## **Build the UI solution**
 * Navigate to the `dynamic-dashboard-front` and follow [build instructions](https://github.com/Sagiaj/dynamic-dashboard-front/blob/master/README.md) - **Only npm install and npm run build**
 

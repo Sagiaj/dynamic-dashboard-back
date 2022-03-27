@@ -55,10 +55,10 @@ export default class SystemDataService {
         }
     }
     
-    static async getDetections(time_from: number, time_to: number) {
+    static async getDetections(time_from: number, time_to: number, limit: number) {
         const method_name = `${class_name}/getDetections`;
         ddLogger.info(`${method_name} - start`);
-        ddLogger.verbose(`${method_name} - input params:`, { time_from, time_to });
+        ddLogger.verbose(`${method_name} - input params:`, { time_from, time_to, limit });
         try {
           if (!time_from) {
             time_from = moment().utc().startOf("day").unix() * 1000;
@@ -73,7 +73,7 @@ export default class SystemDataService {
             {
               $bucketAuto: {
                 groupBy: "$timestamp",
-                buckets: 1000,
+                buckets: limit || 1000,
                 output: {
                   timestamp: {"$min": "$timestamp"},
                   object_type_detections: { "$first": "$object_type_detections" }
