@@ -39,7 +39,7 @@ function generateLiveDataLog() {
     chancesMatrix[Math.floor(Math.random() * chancesMatrix.length)] = 1;
     bacteriaSum += bacterias === -1 ? 0 : bacterias;
     let number_of_type_line = `${dateStr}: Number of bacteria detected:     ${bacterias}`;
-    let detection_size_distribution_line = ``;
+    let detection_size_distribution_line = `Detections per type: ${bacterias === -1 ? "-1" : "0 0 0 0 0"}     `;
     let objectTypeIdx = 0;
     for (let objectType of ObjectTypes) {
         const arrayOfSumNumbers = new Array(5).fill(0).map(a => Math.round(Math.random() * 10));

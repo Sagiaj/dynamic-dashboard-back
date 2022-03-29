@@ -40,8 +40,10 @@ export default class SystemLogsFileParserStrategy extends BaseFileParserStrategy
                         let summary_string = detection_summary_strings[summary_idx];
                         if (summary_string && Number(summary_string.trim()) <= 0) continue;
                         object_type_detection = detection.object_type_detections[detection_idx];
-                        this.addDetections(object_type_detection, summary_string);
-                        ++detection_idx;
+                        if (object_type_detection) {
+                            this.addDetections(object_type_detection, summary_string);
+                            ++detection_idx;
+                        }
                     }
                     continue;
                 }
