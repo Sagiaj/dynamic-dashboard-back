@@ -29,13 +29,19 @@ export default class ThresholdStatusLogsFileParserStrategy extends BaseFileParse
             for await (const summary_line of lines) {
                 i++;
                 if (i <= lower_threshold) { continue; }
-                const threshold_match = summary_line.match(/\d+/g)
-                if (threshold_match !== null) {
-                    model.data.threshold = Number(threshold_match[0]);
-                } else {
-                    // const isOffline = summary_line.indexOf("Folder") >= 0;
-                    const isOnline = summary_line.indexOf("USB") >= 0;
-                    model.data.system_status = isOnline ? SystemStatuses.USB : SystemStatuses.Folder;
+                switch (i) {
+                    case 0:
+                        model.data.threshold = Number(summary_line.trim());
+                        break;
+                    case 1:
+                        const isOnline = summary_line.indexOf("USB") >= 0;
+                        model.data.system_status = isOnline ? SystemStatuses.USB : SystemStatuses.Folder;
+                        break;
+                    case 2:
+                        model.data.image_multiplier = Number(summary_line.trim());
+                        break;
+                    default:
+                        break;
                 }
             }
             threshold_status.push(model.data);

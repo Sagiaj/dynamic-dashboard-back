@@ -19,9 +19,14 @@ export default class SystemDataService {
           ddLogger.verbose(`${method_name} - calling MongodbProvider/aggregateCollection`);
           const results = await MongodbProvider.aggregateCollection({ "timestamp": { "$gte": time_from, "$lte": moment.utc().endOf("day").unix() * 1000 }}, Collections.SystemLogs, aggregation_pipeline);
           ddLogger.verbose(`${method_name} - results=`, results);
+
+          ddLogger.verbose(`${method_name} - calling SystemDataService/getThresholdStatus`);
+          const system_start_data = await SystemDataService.getThresholdStatus();
+          const multiplier = Number(system_start_data.image_multiplier);
+
           ddLogger.info(`${method_name} - end`);
           return results.sort((a,b)=> b.hour - a.hour).map(r => {
-            r.unitPerML = (62500 / (r.count * 100)) * r.avg;
+            r.unitPerML = (62500 / (r.count * multiplier)) * r.avg;
             return r;
           });
         } catch (err) {
@@ -205,6 +210,7 @@ export default class SystemDataService {
       try {
         ddLogger.verbose(`${method_name} - calling MongodbProvider/queryMongoCollection`);
         const threshold_status: any = await MongodbProvider.queryMongoCollection({ timestamp: { $gte: moment().utc().startOf("day").unix() * 1000, $lte: moment().utc().endOf("day").unix() * 1000 } }, Collections.ThresholdStatusLogs, { timestamp: -1 }, 1, null);
+        ddLogger.verbose(`${method_name} - results=`, threshold_status);
         return threshold_status[0];
       } catch (err) {
         ddLogger.error(`${method_name} - failed getting daily experiment threshold. Error=`, err);
