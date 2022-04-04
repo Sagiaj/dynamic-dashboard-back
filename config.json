@@ -16,8 +16,8 @@
     "SERVER_WHITELIST": ["localhost:8080", "http://localhost:8080", "localhost:3333", "http://localhost:3333"],
     "scheduled_tasks": [
         {
-            "task_type": "upsert_cartridge_log_file",
-            "cron_expression": "*/60 * * * * *"
+        "task_type": "upsert_cartridge_log_file",
+        "cron_expression": "*/60 * * * * *"
         },
         {
             "task_type": "upsert_system_log_file",
@@ -41,7 +41,7 @@
         "base_path": "/home/vbboard1",
         "log_types": {
             "notifications": {
-                "path": "",
+                "path": "Sys_data/Test_results/Notifications",
                 "filename_regex": "^Notification_log\\.txt$"
             },
             "cartridge": {
@@ -58,7 +58,11 @@
             },
             "threshold_status": {
                 "path": "Sys_data/Solutions/BasicGUI",
-                "filename_regex": "^THRESHOLD_STATUS.*$"
+                "filename_regex": "^SYSTEM_START_DATA.*$"
+            },
+            "system_mode": {
+                "path": "SYS_OP/build-SYSTEM_START-Desktop_Qt_5_11_1_GCC_64bit-Debug",
+                "filename_regex": "^SYSTEM_MODE\\.txt$"
             }
         },
         "log_formats": {
