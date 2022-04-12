@@ -23,10 +23,11 @@ export default class SystemDataService {
           ddLogger.verbose(`${method_name} - calling SystemDataService/getThresholdStatus`);
           const system_start_data = await SystemDataService.getThresholdStatus();
           const sum_over = Number(system_start_data.sum_over_factor) || 1;
+          const multiplier = Number(system_start_data.multiplier) || 100;
 
           ddLogger.info(`${method_name} - end`);
           return results.sort((a,b)=> b.hour - a.hour).map(hourly_rows => {
-            hourly_rows.unitPerML = ( ( 62500 / hourly_rows.count ) * hourly_rows.sum ) / sum_over;
+            hourly_rows.unitPerML = ( ( 62500 / hourly_rows.count * multiplier) * hourly_rows.sum ) / sum_over;
             return hourly_rows;
           });
         } catch (err) {
