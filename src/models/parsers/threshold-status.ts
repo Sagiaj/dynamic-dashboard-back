@@ -40,6 +40,9 @@ export default class ThresholdStatusLogsFileParserStrategy extends BaseFileParse
                     case 2:
                         model.data.image_multiplier = Number(summary_line.trim());
                         break;
+                    case 3:
+                        model.data.sum_over_factor = Number(summary_line.trim());
+                        break;
                     default:
                         break;
                 }

@@ -61,9 +61,8 @@ export default class ExperimentLogsFileParserStrategy extends BaseFileParserStra
             for (let rec of records) {
                 const hour = rec["TIME START"];
                 const start_of_day = moment().startOf("day");
-                const timestamp = moment(`${start_of_day.utc().format("YYYY-MM-DD")}T${hour}Z`).utc().unix() * 1000;
+                const timestamp = moment(`${start_of_day.utc().format("YYYY-MM-DD")}T${hour}Z`).unix() * 1000;
                 rec["timestamp"] = timestamp;
-                // rec["start_of_day_ts"] = start_of_day.utc().unix() * 1000;
                 experiments.push(rec);
             }
             this.setHighWaterMark(i);
@@ -75,12 +74,5 @@ export default class ExperimentLogsFileParserStrategy extends BaseFileParserStra
             ddLogger.error(`${method_name} - Failed parsing. Error=`, err);
             return [];
         }
-    }
-
-    private getLineTime(line: string): number {
-        if (!line) return 0;
-        const first = line.substring(0, 19);
-
-        return (moment(first).unix() * 1000) + 7200000;
     }
 }

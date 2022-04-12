@@ -13,9 +13,9 @@ export const AggregationPipelines = {
             },
             "type": "$object_type_detections.type"
           },
-          "avg": { "$avg": "$object_type_detections.total" },
-          "sum": { "$sum": "$object_type_detections.total" },
-          "count": { "$sum": 1 }
+          "avg": { "$avg": "$object_type_detections.total" }, // Total's average for the current hour
+          "sum": { "$sum": "$object_type_detections.total" }, // Sum of all rows total
+          "count": { "$sum": 1 } // Number of rows
         }
       },
       { "$sort": { "_id.hour": -1, "_id.min_size_ml": 1 } }
