@@ -40,8 +40,8 @@ export default class ObjectsController {
             const time_from = req.query.time_from;
             const time_to = req.query.time_to;
             const limit = req.query.limit;
-            ddLogger.verbose(`${method_name} - calling SystemDataService/getDetections`);
             ddLogger.verbose(`${method_name} - input params:`, { time_from, time_to, limit });
+            ddLogger.verbose(`${method_name} - calling SystemDataService/getDetections`);
             const results = await SystemDataService.getDetections(Number(time_from), Number(time_to), Number(limit));
             ddLogger.info(`${method_name} - end`);
             return res.send(results);

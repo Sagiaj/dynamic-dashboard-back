@@ -76,7 +76,7 @@ export default class SystemLogsFileParserStrategy extends BaseFileParserStrategy
         if (!line) return 0;
         const first = line.substring(0, 19);
 
-        return moment.utc(first, "DD-MM-YYYY HH:mm:ss").unix() * 1000;
+        return moment(first, "DD-MM-YYYY HH:mm:ss").unix() * 1000;
     }
 
     private addDetections(object_type_detection: ObjectTypeDetection, summary_line: string): ObjectTypeDetection {

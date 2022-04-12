@@ -86,21 +86,17 @@ export default class SystemDataService {
               }
             }
           ]);
+          const system_start_data = await SystemDataService.getThresholdStatus();
+          const multiplier = Number(system_start_data.image_multiplier) || 100;
           const time_series: any = { timestamps: {} };
           for (let system_log of system_logs) {
             if (!system_log.object_type_detections) { continue; }
             for (let detection of system_log.object_type_detections) {
               const object_type = detection.type;
 
-              // time_series.timestamps[system_log["timestamp"]] = 1;
-              // if (!time_series[system_log["timestamp"]]) {
-              //   time_series[system_log["timestamp"]] = {};
-              // }
-
-              // time_series[system_log["timestamp"]][object_type] = detection["total"];
               if (!time_series[object_type]) time_series[object_type] = [];
               time_series.timestamps[system_log["timestamp"]] = true;
-              time_series[object_type].push({ timestamp: system_log["timestamp"], amount: detection["total"] });
+              time_series[object_type].push({ timestamp: system_log["timestamp"], amount: detection["total"] * multiplier });
             }
           }
           ddLogger.info(`${method_name} - end`);
