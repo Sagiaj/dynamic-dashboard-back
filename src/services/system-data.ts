@@ -27,7 +27,7 @@ export default class SystemDataService {
 
           ddLogger.info(`${method_name} - end`);
           return results.sort((a,b)=> b.hour - a.hour).map(hourly_rows => {
-            hourly_rows.unitPerML = ( ( 62500 / hourly_rows.count * multiplier) * hourly_rows.sum ) / sum_over;
+            hourly_rows.unitPerML = ( ( 62500 / (hourly_rows.count * multiplier) ) * hourly_rows.sum ) / sum_over;
             return hourly_rows;
           });
         } catch (err) {
